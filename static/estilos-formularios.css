@@ -46,6 +46,7 @@ button {
     padding: 10px 20px;
     cursor: pointer;
     margin-top: 10px;
+    border-radius: 5px;
 }
 
 /* Estilo para los campos de entrada */
@@ -114,5 +115,5 @@ main {
 }
 
 .title {
-    margin-left: 80px;
+    margin-left: 200px;
 }

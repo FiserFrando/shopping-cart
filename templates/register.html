@@ -6,13 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="/static/prueba.css">
+    <link rel="stylesheet" href="/static/estilos-formularios.css">
 </head>
 
 <body>
     <header>
-        <div class="menu">
+        <div class="title">
             <h2>Regístrate aquí!</h2>
+        </div>
+
+        <div class="menu">
+
             <nav>
                 <ul>
                     <li><a href="/">Volver</a></li>
@@ -20,6 +24,22 @@
             </nav>
         </div>
     </header>
+    <main>
+        <section>
+            <div class="principal">
+                <h2>Registro</h2>
+            </div>
+            <form>
+                <label for="username">Nombre de usuario:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="email">Correo electrónico:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Registrarme</button>
+            </form>
+        </section>
+    </main>
 </body>
 
 </html>
