@@ -3,9 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Login</title>
     <link rel="stylesheet" href="/static/estilos-formularios.css">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
@@ -13,26 +12,20 @@
 <body>
     <header>
         <div class="title">
-            <h2>Bienvenido!</h2>
+            <h2>Ups!</h2>
         </div>
 
         <div class="menu">
 
             <nav>
                 <ul>
-                    <li><a href="/">Carrito de compras 🛒</a></li>
-                    <li><a href="/logout">Salir ↪</a></li>
+                    <li><a href="/register">Volver</a></li>
                 </ul>
             </nav>
         </div>
     </header>
     <main>
-        <div class="home">
-            <p>Por favor seleccione una opción: </p>
-            <button onclick="location.href='/products'">Ver productos 👕</button>
-            <button onclick="location.href='/purchases'">Ver mis compras históricas 📊</button>
-
-        </div>
+        <p style="font-size: 20px;">Lo sentimos, el email "{{email}}" ya está registrado en nuestra base de datos.</p>
     </main>
 </body>
 

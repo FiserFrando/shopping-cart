@@ -13,25 +13,14 @@
 <body>
     <header>
         <div class="title">
-            <h2>Bienvenido!</h2>
-        </div>
-
-        <div class="menu">
-
-            <nav>
-                <ul>
-                    <li><a href="/">Carrito de compras 🛒</a></li>
-                    <li><a href="/logout">Salir ↪</a></li>
-                </ul>
-            </nav>
+            <h2>Confirmación</h2>
         </div>
     </header>
     <main>
         <div class="home">
-            <p>Por favor seleccione una opción: </p>
-            <button onclick="location.href='/products'">Ver productos 👕</button>
-            <button onclick="location.href='/purchases'">Ver mis compras históricas 📊</button>
-
+            <p>¿Estás seguro que deseas cerrar la sesión?</p>
+            <button onclick="location.href='/home'">No, volver al Home ↩</button>
+            <button class="salir" onclick="location.href='/logoutme'">Si, salir ↪</button>
         </div>
     </main>
 </body>

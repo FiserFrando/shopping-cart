@@ -5,15 +5,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="/static/estilos-formularios.css">
+    <title>Delete category</title>
+    <link rel="stylesheet" href="/static/listados.css">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 
 <body>
     <header>
         <div class="title">
-            <h2>Bienvenido!</h2>
+            <h2>Eliminar</h2>
         </div>
 
         <div class="menu">
@@ -21,18 +21,20 @@
             <nav>
                 <ul>
                     <li><a href="/">Carrito de compras 🛒</a></li>
+                    <li><a href="/categories">Volver ↩</a></li>
                     <li><a href="/logout">Salir ↪</a></li>
                 </ul>
             </nav>
         </div>
     </header>
     <main>
-        <div class="home">
-            <p>Por favor seleccione una opción: </p>
-            <button onclick="location.href='/products'">Ver productos 👕</button>
-            <button onclick="location.href='/purchases'">Ver mis compras históricas 📊</button>
-
-        </div>
+        <h1>¿Seguro que deseas eliminar la categoría: "{{category.name}}"?</h1>
+        <form method="POST">
+            <div class="delete-category">
+                <input type="submit" value="No, volver" name="no">
+                <input type="submit" value="Si, eliminar categoría" name="si">
+            </div>
+        </form>
     </main>
 </body>
 
