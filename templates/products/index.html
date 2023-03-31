@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories</title>
+    <link rel="stylesheet" href="/static/listados.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+
+<body>
+    <header>
+        <div class="title">
+            <h2>Categorías</h2>
+        </div>
+
+        <div class="menu">
+
+            <nav>
+                <ul>
+                    <li><a href="/">Carrito de compras 🛒</a></li>
+                    <li><a href="/home">Volver ↩</a></li>
+                    <li><a href="/logout">Salir ↪</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="crear">
+            <a href="/categories/create">Crear nueva categoría 🆕</a>
+        </div> <br><br><br>
+
+        <h3>Listado de categorías:</h3>
+        {% for category in categories %}
+        <div class="container">
+            <div class="card">
+                <h3>{{category.name}}</h3>
+                <a href="/categories/update/{{category.id}}">Editar 🔄</a>
+                <a href="/categories/delete/{{category.id}}">Eliminar ❌</a>
+            </div>
+        </div>
+        {% endfor%}
+    </main>
+</body>
+
+</html>

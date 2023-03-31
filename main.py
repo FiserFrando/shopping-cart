@@ -104,11 +104,8 @@ def categories():
     return render_template("/categories/index.html", categories=categories)
 
 
-####################################################################################################
-
-
 @app.route("/categories/create", methods=["GET", "POST"])
-def pcategory_create():
+def category_create():
     if not session.get("user_id"):
         return redirect("/")
 
@@ -124,7 +121,7 @@ def pcategory_create():
 
 
 @app.route("/categories/update/<id>", methods=["GET", "POST"])
-def product_update(id):
+def category_update(id):
     if not session.get("user_id"):
         return redirect("/")
 
@@ -164,15 +161,71 @@ def category_delete(id):
     return render_template("categories/delete.html", category=category)
 
 
-##############################################################################################################
-
-
 @app.route("/products")
 def products():
     if not session.get("user_id"):
         return redirect("/")
 
-    return render_template("products.html")
+    categories = Product.select()
+
+    return render_template("/products/index.html", products=products)
+
+
+@app.route("/products/create", methods=["GET", "POST"])
+def product_create():
+    if not session.get("user_id"):
+        return redirect("/")
+
+    if request.method == "POST":
+        name = request.form.get("name")
+        price = request.form.get("price")
+
+        if name and price:
+            Product.create(name=name, price=price)
+            return redirect("/products")
+
+    return render_template("products/create.html")
+
+
+@app.route("/products/update/<id>", methods=["GET", "POST"])
+def product_update(id):
+    if not session.get("user_id"):
+        return redirect("/")
+
+    category = Category.get(Category.id == id)
+
+    if request.method == "POST":
+        name = request.form.get("name")
+
+        if name:
+            category.name = name
+
+            category.save()
+
+            return redirect("/categories")
+
+    return render_template("/categories/update.html", category=category)
+
+
+@app.route("/products/delete/<id>", methods=["GET", "POST"])
+def product_delete(id):
+    if not session.get("user_id"):
+        return redirect("/")
+
+    category = Category.get(Category.id == id)
+
+    if request.method == "POST":
+        si = request.form.get("si")
+        no = request.form.get("no")
+
+        if no:
+            return redirect("/categories")
+
+        if si:
+            category.delete_instance()
+            return redirect("/categories")
+
+    return render_template("categories/delete.html", category=category)
 
 
 if __name__ == "__main__":
