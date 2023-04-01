@@ -20,7 +20,7 @@
 
             <nav>
                 <ul>
-                    <li><a href="/">Volver</a></li>
+                    <li><a href="/products">Volver</a></li>
                 </ul>
             </nav>
         </div>
@@ -28,12 +28,14 @@
     <main>
         <section>
             <div class="principal">
-                <h2>Categoría</h2>
+                <h2>Producto</h2>
             </div>
             <form method="POST">
-                <label for="name">Nombre de la categoría:</label> <br><br>
-                <input type="text" id="name" name="name" required>
-                <button type="submit">Crear categoría</button>
+                <label for="name">Nombre del producto:</label> <br><br>
+                <input type="text" id="name" name="name" required> <br>
+                <label for="price">Precio del producto:</label> <br><br>
+                <input type="number" id="price" name="price" required>
+                <button type="submit">Crear producto</button>
             </form>
         </section>
     </main>

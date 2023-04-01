@@ -13,7 +13,7 @@
 <body>
     <header>
         <div class="title">
-            <h2>Categorías</h2>
+            <h2>Productos</h2>
         </div>
 
         <div class="menu">
@@ -29,16 +29,17 @@
     </header>
     <main>
         <div class="crear">
-            <a href="/categories/create">Crear nueva categoría 🆕</a>
+            <a href="/products/create">Crear nuevo producto 🆕</a>
         </div> <br><br><br>
 
-        <h3>Listado de categorías:</h3>
-        {% for category in categories %}
+        <h3>Listado de productos:</h3>
+        {% for product in products %}
         <div class="container">
             <div class="card">
-                <h3>{{category.name}}</h3>
-                <a href="/categories/update/{{category.id}}">Editar 🔄</a>
-                <a href="/categories/delete/{{category.id}}">Eliminar ❌</a>
+                <h3>{{product.name}}</h3>
+                <h3>${{product.price_user}}</h3>
+                <a href="/products/update/{{product.id}}">Editar 🔄</a>
+                <a href="/products/delete/{{product.id}}">Eliminar ❌</a>
             </div>
         </div>
         {% endfor%}

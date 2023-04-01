@@ -21,7 +21,7 @@
             <nav>
                 <ul>
                     <li><a href="/">Carrito de compras 🛒</a></li>
-                    <li><a href="/categories">Volver ↩</a></li>
+                    <li><a href="/products">Volver ↩</a></li>
                     <li><a href="/logout">Salir ↪</a></li>
                 </ul>
             </nav>
@@ -30,12 +30,14 @@
     <main>
         <section>
             <div class="principal">
-                <h2>Categoría</h2>
+                <h2>Producto</h2>
             </div>
             <form method="POST">
-                <label for="name">Nombre de la categoría:</label> <br><br>
-                <input type="text" id="name" name="name" value="{{category.name}}" required>
-                <button type="submit">Editar categoría</button>
+                <label for="name">Nombre de la producto:</label> <br><br>
+                <input type="text" id="name" name="name" value="{{product.name}}" required>
+                <label for="price">Precio del producto:</label> <br><br>
+                <input type="number" id="price" name="price" value="{{product.price}}" required>
+                <button type="submit">Editar Producto</button>
             </form>
         </section>
     </main>

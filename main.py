@@ -166,7 +166,7 @@ def products():
     if not session.get("user_id"):
         return redirect("/")
 
-    categories = Product.select()
+    products = Product.select()
 
     return render_template("/products/index.html", products=products)
 
@@ -178,7 +178,7 @@ def product_create():
 
     if request.method == "POST":
         name = request.form.get("name")
-        price = request.form.get("price")
+        price = int(request.form.get("price"))*100
 
         if name and price:
             Product.create(name=name, price=price)
@@ -192,19 +192,21 @@ def product_update(id):
     if not session.get("user_id"):
         return redirect("/")
 
-    category = Category.get(Category.id == id)
+    product = Product.get(Product.id == id)
 
     if request.method == "POST":
         name = request.form.get("name")
+        price = int(request.form.get("price"))*100
 
-        if name:
-            category.name = name
+        if name and price:
+            product.name = name
+            product.price = price
 
-            category.save()
+            product.save()
 
-            return redirect("/categories")
+            return redirect("/products")
 
-    return render_template("/categories/update.html", category=category)
+    return render_template("/products/update.html", product=product)
 
 
 @app.route("/products/delete/<id>", methods=["GET", "POST"])
@@ -212,20 +214,20 @@ def product_delete(id):
     if not session.get("user_id"):
         return redirect("/")
 
-    category = Category.get(Category.id == id)
+    product = Product.get(Product.id == id)
 
     if request.method == "POST":
         si = request.form.get("si")
         no = request.form.get("no")
 
         if no:
-            return redirect("/categories")
+            return redirect("/products")
 
         if si:
-            category.delete_instance()
-            return redirect("/categories")
+            product.delete_instance()
+            return redirect("/products")
 
-    return render_template("categories/delete.html", category=category)
+    return render_template("products/delete.html", product=product)
 
 
 if __name__ == "__main__":

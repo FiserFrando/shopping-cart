@@ -53,6 +53,11 @@ class Product(Model):
         db_table = "products"
 
 
+    @property
+    def price_user(self):
+        return int(self.price / 100)
+
+
 class Category(Model):
     name = TextField()
     created_at = DateTimeField(default=datetime.now())
