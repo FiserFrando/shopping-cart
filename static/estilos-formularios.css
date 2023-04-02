@@ -133,3 +133,15 @@ main {
 .salir {
     background-color: rgb(236, 83, 83);
 }
+
+.checkboxs {
+    margin-left: 50px;
+}
+
+p {
+    font-weight: bold;
+}
+
+.product-category label {
+    font-weight: bold;
+}

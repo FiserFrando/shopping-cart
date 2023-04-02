@@ -2,7 +2,7 @@ from datetime import datetime
 
 from flask import Flask, redirect, render_template, request, session
 
-from database import Category, Product, Shopping_cart, User
+from database import Category, Product, Product_category, Shopping_cart, User
 
 app = Flask(__name__)
 app.secret_key = (
@@ -158,10 +158,10 @@ def category_delete(id):
             category.delete_instance()
             return redirect("/categories")
 
-    return render_template("categories/delete.html", category=category)
+    return render_template("categories/delete.html")
 
 
-@app.route("/products")
+@app.route("/products", methods=["GET", "POST"])
 def products():
     if not session.get("user_id"):
         return redirect("/")
@@ -176,15 +176,22 @@ def product_create():
     if not session.get("user_id"):
         return redirect("/")
 
+    categories = Category.select()
+
     if request.method == "POST":
         name = request.form.get("name")
-        price = int(request.form.get("price"))*100
+        price = int(request.form.get("price")) * 100
+        categories = request.form.getlist("category_id")
 
         if name and price:
-            Product.create(name=name, price=price)
+            product = Product.create(name=name, price=price)
+
+            for category_id in categories:
+                Product_category.create(product_id=product.id, category_id=category_id)
+
             return redirect("/products")
 
-    return render_template("products/create.html")
+    return render_template("products/create.html", categories=categories)
 
 
 @app.route("/products/update/<id>", methods=["GET", "POST"])
@@ -196,7 +203,7 @@ def product_update(id):
 
     if request.method == "POST":
         name = request.form.get("name")
-        price = int(request.form.get("price"))*100
+        price = int(request.form.get("price")) * 100
 
         if name and price:
             product.name = name

@@ -30,11 +30,19 @@
             <div class="principal">
                 <h2>Producto</h2>
             </div>
-            <form method="POST">
+            <form method="POST" class="product-category">
                 <label for="name">Nombre del producto:</label> <br><br>
                 <input type="text" id="name" name="name" required> <br>
                 <label for="price">Precio del producto:</label> <br><br>
-                <input type="number" id="price" name="price" required>
+                <input type="number" id="price" name="price" required> <br>
+                <p>Selecciona las categorías del producto:</p>
+                {% for category in categories %}
+                <div class="checkboxs">
+                    <input type="checkbox" name="category_id" value="{{category.id}}">
+                    {{category.name}}
+                </div>
+                {% endfor %}
+                <br>
                 <button type="submit">Crear producto</button>
             </form>
         </section>
