@@ -99,7 +99,7 @@ def categories():
     if not session.get("user_id"):
         return redirect("/")
 
-    categories = Category.select()
+    categories = Category.select().order_by(Category.name)
 
     return render_template("/categories/index.html", categories=categories)
 
@@ -176,8 +176,6 @@ def product_create():
     if not session.get("user_id"):
         return redirect("/")
 
-    categories = Category.select()
-
     if request.method == "POST":
         name = request.form.get("name")
         price = int(request.form.get("price")) * 100
@@ -190,6 +188,8 @@ def product_create():
                 Product_category.create(product_id=product.id, category_id=category_id)
 
             return redirect("/products")
+
+    categories = Category.select().order_by(Category.name)
 
     return render_template("products/create.html", categories=categories)
 
@@ -204,16 +204,44 @@ def product_update(id):
     if request.method == "POST":
         name = request.form.get("name")
         price = int(request.form.get("price")) * 100
+        categories_id = request.form.getlist("category_id")
 
         if name and price:
             product.name = name
             product.price = price
-
             product.save()
+
+            a = Product_category.select().where(
+                Product_category.product_id == product.id
+            )
+            for i in a:
+                print(i.id)
 
             return redirect("/products")
 
-    return render_template("/products/update.html", product=product)
+    categories_selected = (
+        Category.select()
+        .join(Product_category, on=(Category.id == Product_category.category_id))
+        .where(Product_category.product_id == product.id)
+        .order_by(Category.name)
+    )
+
+    categories_checked = []
+    for category in categories_selected:
+        categories_checked.append(category.id)
+
+    categories_no_selected = (
+        Category.select()
+        .where(Category.id.not_in(categories_checked))
+        .order_by(Category.name)
+    )
+
+    return render_template(
+        "/products/update.html",
+        product=product,
+        categories_selected=categories_selected,
+        categories_no_selected=categories_no_selected,
+    )
 
 
 @app.route("/products/delete/<id>", methods=["GET", "POST"])

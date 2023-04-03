@@ -32,11 +32,24 @@
             <div class="principal">
                 <h2>Producto</h2>
             </div>
-            <form method="POST">
+            <form method="POST" class="product-category">
                 <label for="name">Nombre de la producto:</label> <br><br>
                 <input type="text" id="name" name="name" value="{{product.name}}" required>
                 <label for="price">Precio del producto:</label> <br><br>
-                <input type="number" id="price" name="price" value="{{product.price}}" required>
+                <input type="number" id="price" name="price" value="{{product.price_user}}" required><br>
+                <p>Selecciona las categorías del producto:</p>
+                {% for category in categories_selected %}
+                <div class="checkboxs">
+                    <input type="checkbox" name="category_id" value="{{category.id}}" checked>
+                    {{category.name}}
+                </div>
+                {% endfor %}
+                {% for category in categories_no_selected %}
+                <div class="checkboxs">
+                    <input type="checkbox" name="category_id" value="{{category.id}}">
+                    {{category.name}}
+                </div>
+                {% endfor %} <br>
                 <button type="submit">Editar Producto</button>
             </form>
         </section>
