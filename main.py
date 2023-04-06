@@ -205,17 +205,28 @@ def product_update(id):
         name = request.form.get("name")
         price = int(request.form.get("price")) * 100
         categories_id = request.form.getlist("category_id")
+        print("categorías: ", categories_id)
 
         if name and price:
             product.name = name
             product.price = price
             product.save()
 
-            a = Product_category.select().where(
+            products_categries = Product_category.select().where(
                 Product_category.product_id == product.id
             )
-            for i in a:
-                print(i.id)
+
+            for i in products_categries:
+                if i.category_id not in categories_id:
+                    i.delete_instance()
+                    print(i.category_id, categories_id)
+
+            for i in categories_id:
+                if not Product_category.select().where(
+                    Product_category.product_id == product.id,
+                    Product_category.category_id == i,
+                ):
+                    Product_category.create(product_id=product.id, category_id=i)
 
             return redirect("/products")
 
