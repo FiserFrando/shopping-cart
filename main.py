@@ -99,7 +99,9 @@ def categories():
     if not session.get("user_id"):
         return redirect("/")
 
-    categories = Category.select().order_by(Category.name)
+    categories = (
+        Category.select().where(Category.deleted == False).order_by(Category.name)
+    )
 
     return render_template("/categories/index.html", categories=categories)
 
@@ -155,10 +157,11 @@ def category_delete(id):
             return redirect("/categories")
 
         if si:
-            category.delete_instance()
+            category.deleted = True
+            category.save()
             return redirect("/categories")
 
-    return render_template("categories/delete.html")
+    return render_template("categories/delete.html", category=category)
 
 
 @app.route("/products", methods=["GET", "POST"])
@@ -166,7 +169,7 @@ def products():
     if not session.get("user_id"):
         return redirect("/")
 
-    products = Product.select()
+    products = Product.select().where(Product.deleted == False).order_by(Product.name)
 
     return render_template("/products/index.html", products=products)
 
@@ -270,7 +273,8 @@ def product_delete(id):
             return redirect("/products")
 
         if si:
-            product.delete_instance()
+            product.deleted = True
+            product.save()
             return redirect("/products")
 
     return render_template("products/delete.html", product=product)

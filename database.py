@@ -2,6 +2,7 @@ from datetime import datetime
 
 from decouple import config
 from peewee import (
+    BooleanField,
     DateTimeField,
     ForeignKeyField,
     IntegerField,
@@ -37,6 +38,7 @@ class Shopping_cart(Model):
     total_price = IntegerField()
     created_at = DateTimeField(default=datetime.now())
     updated_at = DateTimeField()
+    deleted = BooleanField(default=False)
 
     class Meta:
         database = database
@@ -47,11 +49,11 @@ class Product(Model):
     name = TextField()
     price = IntegerField()
     created_at = DateTimeField(default=datetime.now())
+    deleted = BooleanField(default=False)
 
     class Meta:
         database = database
         db_table = "products"
-
 
     @property
     def price_user(self):
@@ -61,6 +63,7 @@ class Product(Model):
 class Category(Model):
     name = TextField()
     created_at = DateTimeField(default=datetime.now())
+    deleted = BooleanField(default=False)
 
     class Meta:
         database = database
