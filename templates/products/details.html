@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear categoría</title>
+    <title>Detalles del producto</title>
     <link rel="stylesheet" href="/static/estilos-formularios.css">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
@@ -20,7 +20,7 @@
 
             <nav>
                 <ul>
-                    <li><a href="/categories">Volver</a></li>
+                    <li><a href="/products">Volver</a></li>
                 </ul>
             </nav>
         </div>
@@ -28,12 +28,18 @@
     <main>
         <section>
             <div class="principal">
-                <h2>Categoría</h2>
+                <h2>Detalles</h2>
             </div>
-            <form method="POST">
-                <label for="name">Nombre de la categoría:</label> <br><br>
-                <input type="text" id="name" name="name" required>
-                <button type="submit">Crear categoría</button>
+            <form method="POST" class="product-category">
+                <h3>{{product.name}}</h3>
+                <h3>Precio: ${{product.price_user}}</h3> <br><br>
+                <div class="input-quantity">
+                    <label for="price">Selecciona la cantidad: </label> <br><br>
+                    <input type="number" id="quantity" name="quantity" required min="1" value="1">
+                </div>
+                <br>
+                <br>
+                <button type="submit">Agregar ➕</button>
             </form>
         </section>
     </main>

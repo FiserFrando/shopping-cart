@@ -1,8 +1,17 @@
 from datetime import datetime
 
 from flask import Flask, redirect, render_template, request, session
+from peewee import *
 
-from database import Category, Product, Product_category, Shopping_cart, User
+from count_products import count_products
+from database import (
+    Category,
+    Product,
+    Product_category,
+    Shopping_cart,
+    Shopping_cart_products,
+    User,
+)
 
 app = Flask(__name__)
 app.secret_key = (
@@ -36,6 +45,13 @@ def register():
             )
             session["user_id"] = user.id
             session["user_rol"] = "user"
+
+            if not session.get("shopping_cart_id"):
+                cart = Shopping_cart.create(user_id=user.id, created_at=datetime.now())
+                print(datetime.now())
+                session["shopping_cart_id"] = cart.id
+                print(cart.created_at)
+
             return redirect("/home")
 
     return render_template("register.html")
@@ -47,21 +63,40 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
 
+        print(email, password)
+
         try:
-            user = User.get((User.email == email) and (User.password == password))
-            login = datetime.now()
+            print(email, password)
+            user = User.get(User.email == email)
 
-            user.last_login = login
-            user.save()
+            if user.password == password:
+                print(user.username)
+                login = datetime.now()
 
-            session["user_id"] = user.id
+                user.last_login = login
+                user.save()
 
-            if user.rol == "admin":
-                session["user_rol"] = "admin"
+                session["user_id"] = user.id
+
+                if user.rol == "admin":
+                    session["user_rol"] = "admin"
+                else:
+                    session["user_rol"] = "user"
+
+                print("111")
+
+                print(session.get("shopping_cart_id"))
+
+                if not session.get("shopping_cart_id"):
+                    cart = Shopping_cart.create(
+                        user_id=user.id, created_at=datetime.now()
+                    )
+                    print(datetime.now())
+                    session["shopping_cart_id"] = cart.id
+                    print(cart.created_at)
+                return redirect("/home")
             else:
-                session["user_rol"] = "user"
-
-            return redirect("/home")
+                return render_template("no-login.html")
 
         except:
             return render_template("no-login.html")
@@ -79,8 +114,17 @@ def logoutme():
     if not session.get("user_id"):
         return redirect("/")
 
-    session.clear()
-    return redirect("/")
+    try:
+        shopping_cart = Shopping_cart.get(
+            Shopping_cart.id == session["shopping_cart_id"]
+        )
+        shopping_cart.deleted = True
+        shopping_cart.save()
+        session.clear()
+        return redirect("/")
+    except:
+        session.clear()
+        return redirect("/")
 
 
 @app.route("/home")
@@ -88,10 +132,14 @@ def home():
     if not session.get("user_id"):
         return redirect("/")
 
+    total = count_products()
+
+    print("total 2:", total)
+
     if session["user_rol"] == "user":
-        return render_template("home.html")
+        return render_template("home.html", total=total)
     else:
-        return render_template("/admin/home.html")
+        return render_template("/admin/home.html", total=total)
 
 
 @app.route("/categories")
@@ -164,14 +212,21 @@ def category_delete(id):
     return render_template("categories/delete.html", category=category)
 
 
-@app.route("/products", methods=["GET", "POST"])
+@app.route("/products")
 def products():
     if not session.get("user_id"):
         return redirect("/")
 
     products = Product.select().where(Product.deleted == False).order_by(Product.name)
 
-    return render_template("/products/index.html", products=products)
+    print(session["user_rol"])
+
+    total = count_products()
+
+    if session["user_rol"] == "admin":
+        return render_template("/products/index.html", products=products, total=total)
+
+    return render_template("/products/index_users.html", products=products, total=total)
 
 
 @app.route("/products/create", methods=["GET", "POST"])
@@ -278,6 +333,38 @@ def product_delete(id):
             return redirect("/products")
 
     return render_template("products/delete.html", product=product)
+
+
+@app.route("/products/details/<id>", methods=["GET", "POST"])
+def product_details(id):
+    if not session.get("user_id"):
+        return redirect("/")
+
+    product = Product.get(Product.id == id)
+
+    if request.method == "POST":
+        quantity = request.form.get("quantity")
+        print(quantity)
+
+        if quantity:
+            Shopping_cart_products.create(
+                shopping_cart_id=session["shopping_cart_id"],
+                product_id=product.id,
+                quantity_products=quantity,
+                created_at=datetime.now(),
+            )
+
+            return redirect("/products")
+
+    return render_template("/products/details.html", product=product)
+
+
+@app.route("/shopping_cart")
+def shopping_cart():
+    if not session.get("user_id"):
+        return redirect("/")
+
+    return render_template("/shopping_cart/example.html")
 
 
 if __name__ == "__main__":

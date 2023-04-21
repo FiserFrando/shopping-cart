@@ -37,8 +37,8 @@ class Shopping_cart(Model):
     user_id = ForeignKeyField(User, backref="shopping_carts")
     total_price = IntegerField()
     created_at = DateTimeField(default=datetime.now())
-    updated_at = DateTimeField()
     deleted = BooleanField(default=False)
+    sold = BooleanField(default=False)
 
     class Meta:
         database = database
@@ -71,10 +71,11 @@ class Category(Model):
 
 
 class Shopping_cart_products(Model):
-    Shopping_cart_id = ForeignKeyField(Shopping_cart, backref="shopping_cart_products")
-    Product_id = ForeignKeyField(Product, backref="shopping_cart_products")
+    shopping_cart_id = ForeignKeyField(Shopping_cart, backref="shopping_cart_products")
+    product_id = ForeignKeyField(Product, backref="shopping_cart_products")
     quantity_products = IntegerField()
     created_at = DateTimeField(default=datetime.now())
+    deleted = BooleanField(default=False)
 
     class Meta:
         database = database

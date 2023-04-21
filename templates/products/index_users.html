@@ -20,30 +20,24 @@
 
             <nav>
                 <ul>
-                    <li><a href="/">Carrito de compras 🛒({{total}})</a></li>
+                    <li><a href="/shopping_cart">Carrito de compras 🛒({{total}})</a></li>
                     <li><a href="/home">Volver ↩</a></li>
                     <li><a href="/logout">Salir ↪</a></li>
                 </ul>
             </nav>
         </div>
     </header>
-    <main>
-        <div class="crear">
-            <a href="/products/create">Crear nuevo producto 🆕</a>
-        </div> <br><br><br>
+    <h3 class="first-h3">Listado de productos:</h3>
+    {% for product in products %}
+    <div class="container">
+        <div class="card">
+            <h3>{{product.name}}</h3>
+            <h3>Precio: ${{product.price_user}}</h3>
+            <a href="/products/details/{{product.id}}" class="detalles">Ver detalles 🔍</a>
 
-        <h3>Listado de productos:</h3>
-        {% for product in products %}
-        <div class="container">
-            <div class="card">
-                <h3>{{product.name}}</h3>
-                <h3>${{product.price_user}}</h3>
-                <a href="/products/update/{{product.id}}">Editar 🔄</a>
-                <a href="/products/delete/{{product.id}}">Eliminar ❌</a><br><br>
-                <a href="/products/details/{{product.id}}" class="detalles">Ver detalles 🔍</a>
-            </div>
         </div>
-        {% endfor%}
+    </div>
+    {% endfor%}
     </main>
 </body>
 

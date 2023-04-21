@@ -185,3 +185,11 @@ main {
     background-color: rgb(68, 128, 230);
     color: white;
 }
+
+.container .detalles {
+    margin-left: 0px;
+}
+
+.first-h3 {
+    margin-left: 10px;
+}

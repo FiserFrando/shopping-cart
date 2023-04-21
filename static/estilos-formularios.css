@@ -145,3 +145,8 @@ p {
 .product-category label {
     font-weight: bold;
 }
+
+.input-quantity input {
+    width: 50px;
+
+}
